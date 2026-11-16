@@ -20,7 +20,7 @@ const ROLES = {
 const can = sec => { const r = ROLES[S.ui.role]; return r === "*" || (r && r.includes(sec)); };
 const need = sec => can(sec) || (toast("403 — permission refusée (appliquée côté serveur en production)", "err"), false);
 const adm = { q: "", p: 1 };
-const toLocal = iso => { const d = new Date(iso); return new Date(d - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16); };
+const toLocal = iso => { if (!iso) return ""; const d = new Date(iso); return new Date(d - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16); };
 const defCats = () => [{ name: "Virage", price: 30, quota: 3000, sold: 0, numbered: false }, { name: "Latérale", price: 80, quota: 1200, sold: 0, numbered: true }, { name: "Tribune d'honneur", price: 150, quota: 400, sold: 0, numbered: true }, { name: "VIP", price: 300, quota: 100, sold: 0, numbered: false }];
 const STAT = (a, b) => a.map(x => `<option ${x === b ? "selected" : ""}>${x}</option>`).join("");
 
@@ -38,7 +38,7 @@ const CR = {
   sponsors: { label: "Sponsor", list: () => S.sponsors, cols: [["name", "Nom"], ["tier", "Niveau"], ["views", "Vues"], ["clicks", "Clics"]], blank: () => ({ name: "", tier: "Commercial", url: "", logo: "", views: 0, clicks: 0 }),
     fields: [["name", "Nom", "text", { req: 1 }], ["tier", "Niveau", "select", { o: ["Officiel", "Institutionnel", "Commercial"] }], ["url", "Site web", "url"], ["logo", "Logo", "image"]] },
   matches: { label: "Match", list: () => S.matches, cols: [["opp", "Adversaire"], ["comp", "Compétition"], ["date", "Date", fdate], ["status", "Statut"], ["hs", "Score KACM"], ["as", "Score adv."]],
-    blank: () => ({ opp: "", comp: "Botola Pro", home: true, venue: S.settings.stadium.name, date: new Date(Date.now() + 7 * 864e5).toISOString(), status: "scheduled", hs: 0, as: 0, minute: 0, events: [], stats: null, lineup: [1, 3, 4, 5, 6, 9, 10, 11, 15, 16, 17], formation: "4-3-3", report: "", onSale: false, sale: { cats: defCats() } }),
+    blank: () => ({ opp: "", comp: "Botola Pro", home: true, venue: S.settings.stadium.name, date: new Date(Date.now() + 7 * 864e5).toISOString(), status: "scheduled", hs: 0, as: 0, minute: 0, events: [], stats: null, lineup: [], formation: "4-3-3", report: "", onSale: false, sale: { cats: defCats() } }),
     fields: [["opp", "Adversaire", "text", { req: 1 }], ["comp", "Compétition", "select", { o: ["Botola Pro", "Coupe du Trône", "CAF Confederation Cup", "Amical"] }], ["date", "Date & heure", "datetime"], ["home", "Match à domicile", "check"], ["venue", "Stade du match", "text"], ["status", "Statut", "select", { o: ["scheduled", "live", "finished", "postponed"] }], ["hs", "Buts KACM", "number", { min: 0 }], ["as", "Buts adversaire", "number", { min: 0 }], ["formation", "Formation", "select", { o: ["4-3-3", "4-4-2", "3-5-2", "4-2-3-1"] }], ["report", "Compte rendu", "textarea"]] }
 };
 function fieldHtml([k, l, ty, o = {}], v) {

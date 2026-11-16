@@ -30,6 +30,7 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 function load() { try { S = JSON.parse(localStorage.getItem(KEY)); } catch (e) { S = null; } if (!S || S.version !== 5) S = buildSeed();
+  enhanceDemoData(S);
   S.settings.tiles = Object.assign({ team: "assets/team.webp", history: "", palmares: "", shop: "", tickets: "assets/hero.png", fans: "assets/hero.png", academy: "assets/team.webp", media: "assets/team.webp" }, S.settings.tiles || {}); }
 const accent = (s, n = 1) => { const w = String(s).trim().split(/\s+/), k = Math.min(n, w.length); return esc(w.slice(0, w.length - k).join(" ")) + (w.length > k ? " " : "") + "<em>" + esc(w.slice(-k).join(" ")) + "</em>"; };
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch (e) { toast("Stockage navigateur plein (image trop lourde ?)", "err"); return false; } }
@@ -38,8 +39,8 @@ const byId = (arr, id) => arr.find(x => x.id === +id);
 const money = n => (Math.round(n * 100) / 100).toLocaleString("fr-FR") + " MAD";
 const LOC = { fr: "fr-FR", ar: "ar-MA", en: "en-GB" };
 const loc = () => LOC[S.ui.lang] || "fr-FR";
-const fdate = (iso, o) => new Date(iso).toLocaleDateString(loc(), o || { weekday: "short", day: "numeric", month: "short", year: "numeric" });
-const ftime = iso => new Date(iso).toLocaleTimeString(loc(), { hour: "2-digit", minute: "2-digit" });
+const fdate = (iso, o) => !iso ? "Date à confirmer" : new Date(iso).toLocaleDateString(loc(), o || { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+const ftime = iso => !iso || S.matches.some(m=>m.date===iso && m.timeConfirmed===false) ? "Horaire non confirmé" : new Date(iso).toLocaleTimeString(loc(), { hour: "2-digit", minute: "2-digit" });
 const user = () => S.users.find(u => u.id === S.ui.uid) || null;
 function ensureGuest() { if (!user()) { const id = nextId(S.users); S.users.push({ id, name: "", email: "", phone: "", points: 0, addrs: [], prefs: {} }); S.ui.uid = id; save(); } }
 const club = () => "KACM";
@@ -68,13 +69,13 @@ const mine = arr => arr.filter(x => x.uid === S.ui.uid);
 function matchTitle(m) { return m.home ? `KACM vs ${esc(m.opp)}` : `${esc(m.opp)} vs KACM`; }
 function score(m) { return m.home ? `${m.hs} - ${m.as}` : `${m.as} - ${m.hs}`; }
 function result(m) { return m.hs > m.as ? "V" : m.hs < m.as ? "D" : "N"; }  // hs = buts KACM, as = buts adversaire
-function nextMatch() { return S.matches.filter(m => m.status === "scheduled" && new Date(m.date) > new Date()).sort((a, b) => new Date(a.date) - new Date(b.date))[0]; }
+function nextMatch() { return S.matches.filter(m => m.status === "scheduled" && (!m.date || new Date(m.date) > new Date())).sort((a, b) => (a.date ? new Date(a.date) : Infinity) - (b.date ? new Date(b.date) : Infinity))[0]; }
 function lastMatch() { return S.matches.filter(m => m.status === "finished").sort((a, b) => new Date(b.date) - new Date(a.date))[0]; }
 function liveMatch() { return S.matches.find(m => m.status === "live"); }
 function ics(m) { const f = d => new Date(d).toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"; const e = new Date(new Date(m.date).getTime() + 7200000);
   return `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nUID:kacm-${m.id}@demo\nDTSTAMP:${f(new Date())}\nDTSTART:${f(m.date)}\nDTEND:${f(e)}\nSUMMARY:${m.home ? "KACM vs " + m.opp : m.opp + " vs KACM"}\nLOCATION:${m.venue}\nEND:VEVENT\nEND:VCALENDAR`; }
 function table() { // classement trié (points, diff)
-  return S.standings.map(r => ({ n: r[0], p: r[1], w: r[2], d: r[3], l: r[4], gf: r[5], ga: r[6], pts: r[2] * 3 + r[3] })).sort((a, b) => b.pts - a.pts || (b.gf - b.ga) - (a.gf - a.ga));
+  return S.standings.map(r => ({ n: r[0], p: r[1], w: r[2], d: r[3], l: r[4], gf: r[5], ga: r[6], pts: r[7] ?? (r[2] * 3 + r[3]), rank:r[8] })).sort((a, b) => a.rank && b.rank ? a.rank - b.rank : b.pts - a.pts || (b.gf - b.ga) - (a.gf - a.ga));
 }
 
 /* ── Routeur ── */
@@ -88,8 +89,9 @@ function route() {
   try { $("#app").innerHTML = fn(r.parts.slice(1), r.q); } catch (e) { console.error(e); $("#app").innerHTML = `<div class="wrap pad"><h2>Erreur</h2><p>${esc(e.message)}</p></div>`; }
   const BT = { matches: "Match Center", team: "Équipe première", history: "Histoire & palmarès", tickets: "Billetterie", store: "Boutique officielle", stadium: "Stade & contact", cart: "Panier", checkout: "Commande", account: "Mes achats" };
   if (BT[name]) $("#app").dataset.title = BT[name]; else delete $("#app").dataset.title;
-  chrome(name); window.scrollTo(0, 0); reveal();
+  chrome(name); document.title = "KACM — " + ({home:"Accueil", matches:"Match Center", team:"Équipe", history:"Histoire & palmarès", news:"Actualités & médias", fans:"Supporters", store:"Boutique", stadium:"Stade & contact", tickets:"Billetterie", cart:"Panier", checkout:"Commande", account:"Mon compte", player:"Profil joueur", product:"Produit", match:"Fiche match"}[name] || "Plateforme digitale"); window.scrollTo(0, 0); reveal();
   if ($$("[data-cd]").length || $$("[data-live]").length) { tick(); route.timer = setInterval(tick, 1000); }
+  $("#app").focus({preventScroll:true});
   if (ROUTES[name] && ROUTES[name].after) ROUTES[name].after(r.parts.slice(1), r.q);
 }
 function reveal() {  // apparition douce au scroll
@@ -111,19 +113,19 @@ const NAV = [["matches", "matches"], ["team", "team"], ["history", "history"], [
 function chrome(name) {
   document.documentElement.lang = S.ui.lang; document.documentElement.dir = S.ui.lang === "ar" ? "rtl" : "ltr";
   const s = S.settings.social, logo = S.settings.logo ? `<img src="${esc(S.settings.logo)}" width="52" height="51" alt="">` : "";
-  const NAVR = [["home", "Accueil"], ["matches", "Matchs"], ["team", "Équipe"], ["history", "Le club"], ["tickets", "Billetterie"], ["store", "Boutique"], ["stadium", "Stade"]];
-  const cart = S.cart.reduce((a, c) => a + c.qty, 0), nTk = mine(S.tickets).filter(x => x.status === "valid").length;
-  $("#top").innerHTML = name === "admin" ? "" : `<div class="rx"><div class="site-header"><div class="wrap navigation"><a class="brand" href="#/home" aria-label="Kawkab Marrakech, accueil">${logo}<span><strong>KAWKAB</strong><small>MARRAKECH</small></span></a>
+  const NAVR = [["home", "Accueil"], ["matches", "Matchs"], ["team", "Équipe"], ["history", "Le club"], ["news", "Actualités"], ["store", "Boutique"]];
+  const cart = S.cart.reduce((a, c) => a + c.qty, 0);
+  $("#top").innerHTML = name === "admin" ? "" : `<div class="rx"><div class="topline"><div class="wrap topline-inner"><span>MARRAKECH · DEPUIS 1947</span><span class="utility-links"><a href="#/fans">Supporters</a><a href="#/stadium">Stade & contact</a><a href="#/account/tickets">Mon compte</a></span></div></div><div class="site-header"><div class="wrap navigation"><a class="brand" href="#/home" aria-label="Kawkab Marrakech, accueil">${logo}<span><strong>KAWKAB</strong><small>MARRAKECH</small></span></a>
     <nav id="main-navigation" aria-label="Navigation principale">${NAVR.map(([r, l]) => `<a href="#/${r}" ${name === r ? 'aria-current="location"' : ""}>${l}</a>`).join("")}</nav>
-    <div class="hx"><a class="hx-ic" href="#/cart" aria-label="Panier">${ico("cart")}<i>${cart || ""}</i></a><a class="hx-ic" href="#/account/tickets" aria-label="Mes achats" title="Mes achats">${ico("bag")}<i>${nTk || ""}</i></a>
+    <div class="hx"><a class="hx-ic" href="#/cart" aria-label="Panier">${ico("cart")}<i>${cart || ""}</i></a><a class="hx-ic" href="#/account/tickets" aria-label="Mes achats" title="Mes achats">${ico("bag")}</a>
      <div class="langdd"><button class="hx-ic" type="button" data-act="langmenu" aria-label="Langue" aria-haspopup="true" aria-expanded="false">${ico("globe")}</button><ul class="langlist" hidden>${[["fr", "Français"], ["ar", "العربية"], ["en", "English"]].map(([l, n]) => `<li><button type="button" data-act="lang" data-arg="${l}" class="${S.ui.lang === l ? "on" : ""}">${n}${S.ui.lang === l ? ico("check") : ""}</button></li>`).join("")}</ul></div></div>
-    <a class="button header-ticket" href="#/tickets" aria-label="Billetterie" title="Billetterie">${ico("ticket")}</a>
+    <a class="button header-ticket" href="#/tickets" aria-label="Billetterie" title="Billetterie">${ico("ticket")}<span>Billetterie</span></a>
     <button class="menu-toggle" type="button" data-act="menu" aria-controls="main-navigation" aria-expanded="false" aria-label="Ouvrir le menu">${ico("menu")}</button></div></div></div>`;
-  $("#bot").innerHTML = name === "admin" ? "" : `<div class="rx"><footer class="footer"><div class="wrap footer-inner"><a class="brand footer-brand" href="#/home" aria-label="Retour à l'accueil">${logo.replace('width="52" height="51"', 'width="56" height="55"')}<span><strong>KAWKAB</strong><small>MARRAKECH</small></span></a>
-   <div class="footer-links"><a href="#/matches">Matchs</a><a href="#/team">Équipe</a><a href="#/history">Le club</a><a href="#/tickets">Billetterie</a><a href="#/store">Boutique</a><a href="#/stadium">Stade &amp; contact</a><a href="#/cart">Panier</a><a href="#/account/tickets">Mes achats</a>
+  $("#bot").innerHTML = name === "admin" ? "" : `<div class="demo-ribbon">Données sportives consultées le 16 novembre 2026 · <a href="#/sources">Sources & mise à jour</a> · services interactifs en prototype</div><div class="rx"><footer class="footer"><div class="wrap footer-inner"><a class="brand footer-brand" href="#/home" aria-label="Retour à l'accueil">${logo.replace('width="52" height="51"', 'width="56" height="55"')}<span><strong>KAWKAB</strong><small>MARRAKECH</small></span></a>
+   <div class="footer-links"><a href="#/tickets" data-ticket-info>Infos billetterie</a><a href="#/news">Actualités & médias</a><a href="#/fans">Supporters</a><a href="#/matches">Matchs</a><a href="#/team">Équipe</a><a href="#/history">Le club</a><a href="#/tickets">Billetterie</a><a href="#/store">Boutique</a><a href="#/stadium">Stade &amp; contact</a><a href="#/cart">Panier</a><a href="#/account/tickets">Mes achats</a>
     <a href="${esc(s.facebook)}" target="_blank" rel="noopener">Facebook</a><a href="${esc(s.instagram)}" target="_blank" rel="noopener">${ico("instagram")} Instagram</a><a href="${esc(s.youtube)}" target="_blank" rel="noopener">YouTube</a>
     <span class="langs"><button type="button" data-act="lang" data-arg="fr">FR</button><button type="button" data-act="lang" data-arg="ar">AR</button><button type="button" data-act="lang" data-arg="en">EN</button></span></div>
-   <p>MVP · données de démonstration, aucune donnée officielle · <a href="admin/index.html">Administration</a> · <a href="#" data-act="resetDemo">Réinitialiser</a></p></div></footer></div>`;
+   <p>Prototype indépendant · données sportives sourcées, sans actualisation en direct · <a href="admin/index.html">Administration</a> · <a href="#" data-act="resetDemo">Réinitialiser</a></p></div></footer></div>`;
 }
 
 /* ── Actions & formulaires délégués ── */
@@ -156,6 +158,6 @@ A.menu = (_, el) => { const n = $("#main-navigation"); if (!n) return; const o =
 document.addEventListener("click", e => { if (e.target.closest("#main-navigation a")) { const n = $("#main-navigation"), m = $(".menu-toggle"); n && n.classList.remove("is-open"); m && m.setAttribute("aria-expanded", "false"); } });
 A.lang = l => { S.ui.lang = l; save(); rerender(); };
 A.resetDemo = () => { if (confirm("Réinitialiser toutes les données de démonstration ?")) { localStorage.removeItem(KEY); load(); go("home"); route(); toast("Démo réinitialisée"); } };
-A.dl = (id) => { const m = byId(S.matches, id); download(`match-${id}.ics`, ics(m), "text/calendar"); };
+A.dl = (id) => { const m = byId(S.matches, id); if (!m?.date || m.dateConfirmed===false || m.timeConfirmed===false) return toast("Date ou horaire à confirmer avant l’ajout au calendrier", "err"); download(`match-${id}.ics`, ics(m), "text/calendar"); };
 
 function boot() { load(); ensureGuest(); if (!location.hash) location.hash = "#/home"; route(); }
