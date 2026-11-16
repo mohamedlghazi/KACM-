@@ -31,20 +31,11 @@
   const link = p => `team.html#p=${p.id}`;
   const sorted = l => l.slice().sort((a, b) => (+a.num || 999) - (+b.num || 999));
 
-  /* ---------- carte joueur (style « fiche club » : photo détourée, numéro, nom, poste, drapeau) ---------- */
-  const FLAGS = {
-    "Maroc": '<svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#c1272d"/><path d="M15 4.6l1.5 4.5h4.7l-3.8 2.8 1.5 4.5L15 13.6l-3.9 2.8 1.5-4.5-3.8-2.8h4.7z" fill="none" stroke="#006233" stroke-width="1"/></svg>',
-    "France": '<svg viewBox="0 0 30 20"><rect width="10" height="20" fill="#0055a4"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#ef4135"/></svg>',
-    "Guinée": '<svg viewBox="0 0 30 20"><rect width="10" height="20" fill="#ce1126"/><rect x="10" width="10" height="20" fill="#fcd116"/><rect x="20" width="10" height="20" fill="#009460"/></svg>',
-    "Sénégal": '<svg viewBox="0 0 30 20"><rect width="10" height="20" fill="#00853f"/><rect x="10" width="10" height="20" fill="#fdef42"/><rect x="20" width="10" height="20" fill="#e31b23"/><path d="M15 6.4l1 3h3.1l-2.5 1.8 1 3L15 12.4l-2.6 1.8 1-3-2.5-1.8H14z" fill="#00853f"/></svg>'
-  };
-  const flag = n => (FLAGS[n] ? `<span class="px-flag">${FLAGS[n]}</span>` : "");
+  /* ---------- carte joueur ---------- */
   function pcard(p) {
     const [fn, ln] = split(p.name);
-    const photo = p.photo ? `<img src="${esc(cutSrc(p))}" alt="" loading="lazy">` : `<b class="px-ini">${esc(initials(p.name))}</b>`;
-    return `<a class="pcx" href="${link(p)}" aria-label="${esc(p.name)}"><span class="px-ph">${photo}</span>
-      <span class="px-box"><span class="px-top"><b class="px-n">${hasNum(p) ? esc(p.num) : "–"}</b><span class="px-name">${fn ? `<i>${esc(fn)}</i>` : ""}<strong>${esc(ln)}</strong></span></span>
-      <span class="px-bot"><em>${esc(posOne(p))}</em><span class="px-nat">${flag(p.nat)}${esc(p.nat || "")}</span></span></span></a>`;
+    return `<a class="pcard" href="${link(p)}" aria-label="${esc(p.name)}">${hasNum(p) ? `<span class="pc-num">${esc(p.num)}</span>` : ""}
+      <span class="pc-info"><small>${esc(posOne(p))}${p.nat ? " · " + esc(p.nat) : ""}</small>${fn ? `<span class="pc-fn">${esc(fn)}</span>` : ""}<span class="pc-ln">${esc(ln)}</span></span><span class="pc-go" aria-hidden="true">→</span></a>`;
   }
 
   /* ---------- effectif ---------- */
@@ -113,18 +104,12 @@
     const stats = [[t("tp.apps"), p.apps], [t("tp.goals"), p.goals], [t("tp.assists"), p.assists], [t("tp.min"), p.min], [t("tp.yc"), p.yc], [t("tp.rc"), p.rc]];
     const hasStats = stats.some(s => s[1] && s[1] !== "—");
     const inXI = XI_IDS.includes(p.id);
-    return `<section class="pf"><div class="wrap"><a class="back" href="team.html">${t("tp.back")}</a>
-      <div class="pf-card">
-        <div class="pf-photo">${p.photo ? `<img src="${esc(cutSrc(p))}" alt="${esc(p.name)}">` : ava(p, "xl")}</div>
-        <div class="pf-box">
-          ${inXI ? `<span class="pf-tag">${t("tp.inxi")}</span>` : ""}
-          <div class="pf-top"><b class="pf-n">${hasNum(p) ? esc(p.num) : "–"}</b><h1 class="pf-name">${split(p.name)[0] ? `<i>${esc(split(p.name)[0])}</i>` : ""}<strong>${esc(split(p.name)[1])}</strong></h1></div>
-          <div class="pf-bot"><em>${esc(posOne(p))}${p.captain ? " · " + t("tp.captain") : ""}</em><span class="pf-nat">${flag(p.nat).replace("px-flag", "pf-flag")}${esc(p.nat || "")}</span></div>
-        </div></div></div></section>
+    return `<section class="pl-hero"><div class="wrap pl-hero-in"><a class="back light" href="team.html">${t("tp.back")}</a>
+      <div class="pl-hero-grid"><div class="pl-big">${hasNum(p) ? `<span class="pl-bignum">${esc(p.num)}</span>` : ""}</div>
+      <div class="pl-head"><p class="eyebrow light"><span>${esc(posOne(p))}${inXI ? " · " + t("tp.inxi") : ""}</span></p><h1>${esc(p.name)}</h1><p class="pl-sub">${esc(p.nat || "")} ${p.captain ? "· " + t("tp.captain") : ""}</p></div></div></div></section>
       <section class="sec"><div class="wrap pl-body"><div><h2 class="sub-h2">${t("tp.infos")}</h2><dl class="pl-info">${info.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
         <h2 class="sub-h2">${t("tp.stats")}</h2>${hasStats ? `<dl class="pl-stats">${stats.map(([k, v]) => `<div><dd>${esc(v || "—")}</dd><dt>${esc(k)}</dt></div>`).join("")}</dl>` : `<p class="note">${t("tp.nostats")}</p>`}
-        ${p.bio && !/Informations consultées/.test(p.bio) ? `<h2 class="sub-h2">${t("tp.bio")}</h2><p>${esc(p.bio)}</p>` : ""}
-        <div class="pl-nav"><a class="btn btn-line" href="${link(prev)}">← ${esc(prev.name)}</a><a class="btn btn-line" href="${link(next)}">${esc(next.name)} →</a></div></div>
+        ${p.bio && !/Informations consultées/.test(p.bio) ? `<h2 class="sub-h2">${t("tp.bio")}</h2><p>${esc(p.bio)}</p>` : ""}</div>
         <aside><h2 class="sub-h2">${t("tp.same")}</h2><div class="same">${same.map(pcard).join("")}</div></aside></div></section>`;
   }
 
