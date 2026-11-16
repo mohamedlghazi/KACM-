@@ -6,7 +6,7 @@ const KACM_NEWS = (function () {
       id: "amical-tiznit", cat: "Match Reports", date: "2026-11-15T12:00:00Z",
       title: "Match amical : le Kawkab face à l'Amal Tiznit",
       excerpt: "Rencontre amicale à l'annexe du Grand Stade de Marrakech, avec un but de Youssef Zghoudi.",
-      img: "assets/amical/a-13.jpg", pos: "center 27%",
+      img: "assets/amical/a-13.jpg", pos: "center 6%",
       body: [
         "Le Kawkab Athletic Club Marrakech a disputé le 15 novembre 2026 un match amical face à l'Amal Tiznit (USAT), à l'annexe du Grand Stade de Marrakech. Coup d'envoi à 15h00.",
         "Le club a dévoilé sa composition de départ (« Starting XI ») avant la rencontre, puis a suivi le match en images : coup d'envoi, première période, mi-temps, seconde période et coup de sifflet final.",

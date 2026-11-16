@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Cairo:wght@500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20261116x">
+<link rel="stylesheet" href="css/style.css?v=20261120b">
 </head>
 <body>
 <a class="skip" href="#main" data-i18n="skip">Aller au contenu</a>
@@ -32,10 +32,10 @@
       <a href="news.html" data-i18n="nav.news">News</a>
       <a href="team.html" data-i18n="nav.team">Équipe</a>
       <a href="club.html" data-i18n="nav.club">Club</a>
-      <a href="#" data-soon data-i18n="nav.history">Histoire</a>
-      <a href="#" data-soon data-i18n="nav.stadium">Stade</a>
-      <a href="#" data-soon data-i18n="nav.store">Boutique</a>
-      <a href="#" data-soon data-i18n="nav.media">Média</a>
+      <a href="histoire.html" data-i18n="nav.history">Histoire</a>
+      <a href="stade.html" data-i18n="nav.stadium">Stade</a>
+      <a href="store.html" data-i18n="nav.store">Boutique</a>
+      <a href="media.html" data-i18n="nav.media">Média</a>
     </nav>
     <div class="tools">
       <div class="lang" id="lang">
@@ -97,19 +97,10 @@
 
 <!-- 6. ACCÈS RAPIDE -->
 <section class="sec quick-sec" aria-label="Accès rapide">
-  <div class="wrap quick">
-    <a class="q" href="https://kacm.ticketing.ma/" target="_blank" rel="noopener">
-      <img src="assets/amical/a-17.jpg" alt="" loading="lazy" style="object-position:center 26%">
-      <span class="q-body"><small data-i18n="q.t.k">Billetterie</small><strong data-i18n="q.t.t">Vivez le match au stade</strong><em data-i18n="q.t.c">Réserver →</em></span>
-    </a>
-    <a class="q" href="#" data-soon>
-      <img src="assets/amical/a-2.jpg" alt="" loading="lazy" style="object-position:center 42%">
-      <span class="q-body"><small data-i18n="q.s.k">Boutique</small><strong data-i18n="q.s.t">Porte les couleurs du Kawkab</strong><em data-i18n="q.s.c">Découvrir →</em></span>
-    </a>
-    <a class="q" href="team.html">
-      <img src="assets/training/training-3.jpg" alt="" loading="lazy" style="object-position:center 52%">
-      <span class="q-body"><small data-i18n="q.e.k">Équipe</small><strong data-i18n="q.e.t">Joueurs et staff technique</strong><em data-i18n="q.e.c">Voir l'effectif →</em></span>
-    </a>
+  <div class="wrap quick qb">
+    <a class="qbtn" href="https://kacm.ticketing.ma/" target="_blank" rel="noopener"><span class="qb-l"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 9a2 2 0 0 0 0 6v3h18v-3a2 2 0 0 1 0-6V6H3z"/><path d="M14 6v12" stroke-dasharray="2 2"/></svg><b data-i18n="q.t.k">Billetterie</b></span><span class="qb-ar" aria-hidden="true">→</span></a>
+    <a class="qbtn" href="store.html"><span class="qb-l"><span class="qb-i" aria-hidden="true">→</span><b data-i18n="q.s.k">Boutique</b></span><span class="qb-ar" aria-hidden="true">→</span></a>
+    <a class="qbtn" href="team.html"><span class="qb-l"><span class="qb-i" aria-hidden="true">→</span><b data-i18n="q.e.b">Équipe pro</b></span><span class="qb-ar" aria-hidden="true">→</span></a>
   </div>
 </section>
 
@@ -167,7 +158,7 @@
         <p class="eyebrow"><span data-i18n="his.k">Histoire &amp; palmarès</span></p>
         <h2 id="hisT" data-i18n="his.t">Marrakech.<br>Depuis 1947.</h2>
         <p data-i18n="his.p">Fondé à Marrakech en 1947, le Kawkab Athlétique Club de Marrakech porte le rouge et le blanc de la Ville Rouge. Ses succès en championnat, en Coupe du Trône et en Coupe de la CAF jalonnent l'histoire du football marocain.</p>
-        <a class="btn btn-dark" href="#" data-soon><span data-i18n="his.c">Histoire complète du Kawkab</span><span aria-hidden="true">↗</span></a>
+        <a class="btn btn-dark" href="histoire.html"><span data-i18n="his.c">Histoire complète du Kawkab</span><span aria-hidden="true">↗</span></a>
         <ul class="trophies">
           <li><b>2</b><span data-i18n="tr.l">Championnats du Maroc</span><small>1958 · 1992</small></li>
           <li><b>6</b><span data-i18n="tr.t">Coupes du Trône</span><small>1963 · 64 · 65 · 87 · 91 · 93</small></li>
@@ -201,7 +192,7 @@
 </section>
 
 <!-- 11. PARTENAIRES + NEWSLETTER -->
-<section class="sec" aria-labelledby="spT">
+<section class="sec sec-sp" aria-labelledby="spT">
   <div class="wrap">
     <header class="sec-head"><div><p class="eyebrow"><span data-i18n="sp.k">Ils soutiennent le Kawkab</span></p><h2 id="spT" data-i18n="sp.t">Partenaires</h2></div></header>
     <ul class="sponsors">
@@ -241,7 +232,7 @@
         <li><a href="news.html" data-i18n="nav.news">News</a></li>
         <li><a href="team.html" data-i18n="nav.team">Équipe</a></li>
         <li><a href="club.html" data-i18n="nav.club">Club</a></li>
-        <li><a href="#" data-soon data-i18n="nav.store">Boutique</a></li>
+        <li><a href="store.html" data-i18n="nav.store">Boutique</a></li>
         <li><a href="https://kacm.ticketing.ma/" target="_blank" rel="noopener" data-i18n="cta.ticket">Acheter un billet</a></li>
       </ul>
     </div>
@@ -266,10 +257,10 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="js/data.js?v=20261116x"></script>
-<script src="js/news-data.js?v=20261116x"></script>
-<script src="js/i18n.js?v=20261116x"></script>
-<script src="js/common.js?v=20261116x"></script>
-<script src="js/app.js?v=20261116x"></script>
+<script src="js/data.js?v=20261120b"></script>
+<script src="js/news-data.js?v=20261120b"></script>
+<script src="js/i18n.js?v=20261120b"></script>
+<script src="js/common.js?v=20261120b"></script>
+<script src="js/app.js?v=20261120b"></script>
 </body>
 </html>
