@@ -4,37 +4,270 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>KACM — Kawkab Athletic Club Marrakech</title>
+<meta name="description" content="Site du Kawkab Athletic Club Marrakech, fondé en 1947 : centre des matchs, actualités, équipe première, histoire et billetterie.">
+<link rel="icon" href="assets/logo.png?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800;900&family=Inter:wght@400;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=81">
-<link rel="stylesheet" href="css/ref.css?v=81">
-<meta name="description" content="Prototype KACM : matchs, équipe, histoire, billetterie, boutique, supporters, stade et médias.">
-<link rel="stylesheet" href="css/modules.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Cairo:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<a class="skip" href="#app">Aller au contenu</a>
-<header id="top"></header>
-<main id="app" tabindex="-1"></main>
-<div id="bot"></div>
-<div id="modal" class="modal" hidden></div>
-<div id="toasts" aria-live="polite"></div>
-<script src="js/verified-data.js"></script>
-<script src="js/data.js" defer></script>
-<script src="js/demo-content.js" defer></script>
-<script src="js/core.js" defer></script>
-<script src="js/shared.js" defer></script>
-<script src="js/home.js" defer></script>
-<script src="js/matches.js" defer></script>
-<script src="js/team.js" defer></script>
-<script src="js/history.js" defer></script>
-<script src="js/tickets.js" defer></script>
-<script src="js/store.js" defer></script>
-<script src="js/stadium.js" defer></script>
-<script src="js/account.js" defer></script>
-<script src="js/fans.js" defer></script>
-<script src="js/media.js" defer></script>
-<script src="js/sources.js" defer></script>
-<script src="js/accessibility.js" defer></script>
-<script src="js/boot.js" defer></script>
+<a class="skip" href="#main" data-i18n="skip">Aller au contenu</a>
+
+<!-- 1. HEADER / NAVBAR -->
+<div class="topbar">
+  <div class="wrap">
+    <span><i class="dot"></i><span data-i18n="top.loc">Marrakech, Maroc</span><em>|</em><span data-i18n="top.since">Depuis 1947</span></span>
+    <span class="ar" lang="ar" dir="rtl">الكوكب الرياضي المراكشي</span>
+  </div>
+</div>
+<header class="site-header" id="top">
+  <div class="wrap bar">
+    <a class="brand" href="index.html" aria-label="KACM — accueil">
+      <img src="assets/logo.png?v=2" alt="" width="46" height="46">
+      <span><strong>KAWKAB</strong><small>MARRAKECH</small></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Navigation principale">
+      <a href="index.html" aria-current="page" data-i18n="nav.home">Accueil</a>
+      <a href="#" data-soon data-i18n="nav.news">News</a>
+      <a href="#" data-soon data-i18n="nav.team">Équipe</a>
+      <a href="#" data-soon data-i18n="nav.club">Club</a>
+      <a href="#" data-soon data-i18n="nav.history">Histoire</a>
+      <a href="#" data-soon data-i18n="nav.stadium">Stade</a>
+      <a href="#" data-soon data-i18n="nav.store">Boutique</a>
+      <a href="#" data-soon data-i18n="nav.media">Média</a>
+    </nav>
+    <div class="tools">
+      <div class="lang" id="lang">
+        <button type="button" class="lang-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Langue">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></svg>
+          <span id="langCur">FR</span>
+        </button>
+        <ul class="lang-menu" role="listbox" hidden>
+          <li role="option" data-lang="fr">Français</li>
+          <li role="option" data-lang="ar">العربية</li>
+          <li role="option" data-lang="en">English</li>
+        </ul>
+      </div>
+      <a class="btn btn-red" href="https://kacm.ticketing.ma/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9a2 2 0 0 0 0 6v3h18v-3a2 2 0 0 1 0-6V6H3z"/><path d="M14 6v12" stroke-dasharray="2 2"/></svg>
+        <span data-i18n="cta.ticket">Acheter un billet</span><span aria-hidden="true">↗</span>
+      </a>
+      <button type="button" class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<!-- 2. HERO -->
+<section class="hero" aria-labelledby="heroTitle">
+  <img class="hero-img" src="assets/hero-team.jpg" alt="Les joueurs du Kawkab Marrakech à l'entraînement" fetchpriority="high">
+  <div class="hero-shade"></div>
+  <div class="wrap hero-in">
+    <p class="eyebrow light"><span data-i18n="hero.kicker">Botola Pro Inwi · Saison 2026/27</span></p>
+    <h1 id="heroTitle">Kawkab<br>Marrakech<b>.</b></h1>
+    <p class="hero-sub" data-i18n="hero.sub">Le club de la Ville Rouge, depuis 1947.</p>
+    <div class="hero-row">
+      <div class="hero-cta">
+        <a class="btn btn-red" href="#matchCenter" data-i18n="cta.matches">Les matchs <span aria-hidden="true">→</span></a>
+        <a class="btn btn-ghost" href="#history" data-i18n="cta.club">Découvrir le club <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="chip" id="heroChip"></div>
+    </div>
+  </div>
+  <div class="hero-bar" aria-hidden="true"><i></i></div>
+</section>
+
+<!-- 3 + 4 + 5. CENTRE DES MATCHS : prochain match, dernier résultat, classement -->
+<section class="sec sec-beige" id="matchCenter" aria-labelledby="mcT">
+  <div class="wrap">
+    <header class="sec-head">
+      <div><p class="eyebrow"><span data-i18n="mc.k">Botola Pro Inwi · 2026/27</span></p><h2 id="mcT" data-i18n="mc.t">Centre des matchs</h2></div>
+      <div class="tabs" role="tablist" aria-label="Centre des matchs">
+        <button role="tab" aria-selected="true" data-tab="une" data-i18n="tab.une">À la une</button>
+        <button role="tab" aria-selected="false" data-tab="res" data-i18n="tab.res">Résultats</button>
+        <button role="tab" aria-selected="false" data-tab="cal" data-i18n="tab.cal">Calendrier</button>
+        <button role="tab" aria-selected="false" data-tab="table" data-i18n="tab.table">Classement</button>
+      </div>
+    </header>
+    <div id="mcBody" role="tabpanel"></div>
+  </div>
+</section>
+
+<!-- 6. ACCÈS RAPIDE -->
+<section class="sec quick-sec" aria-label="Accès rapide">
+  <div class="wrap quick">
+    <a class="q" href="https://kacm.ticketing.ma/" target="_blank" rel="noopener">
+      <img src="assets/real/club-20.jpg" alt="" loading="lazy">
+      <span class="q-body"><small data-i18n="q.t.k">Billetterie</small><strong data-i18n="q.t.t">Vivez le match au stade</strong><em data-i18n="q.t.c">Réserver →</em></span>
+    </a>
+    <a class="q" href="#" data-soon>
+      <img src="assets/real/club-21.jpg" alt="" loading="lazy">
+      <span class="q-body"><small data-i18n="q.s.k">Boutique</small><strong data-i18n="q.s.t">Porte les couleurs du Kawkab</strong><em data-i18n="q.s.c">Découvrir →</em></span>
+    </a>
+    <a class="q" href="#" data-soon>
+      <img src="assets/real/club-22.jpg" alt="" loading="lazy">
+      <span class="q-body"><small data-i18n="q.e.k">Équipe</small><strong data-i18n="q.e.t">Joueurs et staff technique</strong><em data-i18n="q.e.c">Voir l'effectif →</em></span>
+    </a>
+  </div>
+</section>
+
+<!-- 7. LE FIL DU KAWKAB (actualités) -->
+<section class="sec" aria-labelledby="newsT">
+  <div class="wrap">
+    <header class="sec-head">
+      <div><p class="eyebrow"><span data-i18n="news.k">Le fil du Kawkab</span></p><h2 id="newsT" data-i18n="news.t">À la une</h2></div>
+      <a class="btn btn-line" href="#" data-soon><span data-i18n="news.all">Voir toutes les actualités</span><span aria-hidden="true">↗</span></a>
+    </header>
+    <div class="news" id="newsGrid"></div>
+  </div>
+</section>
+
+<!-- 8. ÉQUIPE PREMIÈRE + JOUEURS -->
+<section class="sec dark" aria-labelledby="teamT">
+  <div class="wrap">
+    <div class="team-grid">
+      <figure class="team-photo"><img src="assets/team-squad.jpg" alt="Photo d'équipe du Kawkab Marrakech avant le match" loading="lazy"><figcaption data-i18n="team.cap">Le onze du Kawkab avant le match</figcaption></figure>
+      <div class="team-text">
+        <p class="eyebrow light"><span data-i18n="team.k">Équipe première · Botola Pro 2026/27</span></p>
+        <h2 id="teamT" data-i18n="team.t">Notre<br>équipe</h2>
+        <p id="teamP"></p>
+        <dl class="stats" id="teamStats"></dl>
+        <a class="btn btn-red" href="#" data-soon><span data-i18n="team.c">Voir l'effectif</span><span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <h3 class="sub-h" data-i18n="pl.t">Joueurs à suivre</h3>
+    <div class="players" id="playersGrid"></div>
+  </div>
+</section>
+
+<!-- 9. LA SAISON EN IMAGES -->
+<section class="sec sec-beige" aria-labelledby="galT">
+  <div class="wrap">
+    <header class="sec-head">
+      <div><p class="eyebrow"><span data-i18n="gal.k">Botola Pro Inwi · 2026/27</span></p><h2 id="galT" data-i18n="gal.t">La saison en images</h2></div>
+      <a class="btn btn-line" href="#" data-soon><span data-i18n="gal.c">Albums du KACM</span><span aria-hidden="true">↗</span></a>
+    </header>
+    <ul class="gallery">
+      <li><img src="assets/gallery/kacm-4.jpg" alt="Un joueur du Kawkab célèbre un but" loading="lazy"></li>
+      <li><img src="assets/gallery/kacm-2.jpg" alt="Un joueur du Kawkab en match de Botola" loading="lazy"></li>
+      <li><img src="assets/gallery/kacm-3.jpg" alt="Le Kawkab en action de nuit" loading="lazy"></li>
+      <li><img src="assets/gallery/kacm-1.jpg" alt="Un joueur du Kawkab devant les tribunes" loading="lazy"></li>
+      <li><img src="assets/gallery/kacm-5.jpg" alt="Un joueur du Kawkab à la relance" loading="lazy"></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 10. HISTOIRE & PALMARÈS -->
+<section class="sec" id="history" aria-labelledby="hisT">
+  <div class="wrap">
+    <div class="history">
+      <div class="his-text">
+        <p class="eyebrow"><span data-i18n="his.k">Histoire &amp; palmarès</span></p>
+        <h2 id="hisT" data-i18n="his.t">Marrakech.<br>Depuis 1947.</h2>
+        <p data-i18n="his.p">Fondé à Marrakech en 1947, le Kawkab Athlétique Club de Marrakech porte le rouge et le blanc de la Ville Rouge. Ses succès en championnat, en Coupe du Trône et en Coupe de la CAF jalonnent l'histoire du football marocain.</p>
+        <a class="btn btn-dark" href="#" data-soon><span data-i18n="his.c">Histoire complète du Kawkab</span><span aria-hidden="true">↗</span></a>
+        <ul class="trophies">
+          <li><b>2</b><span data-i18n="tr.l">Championnats du Maroc</span><small>1958 · 1992</small></li>
+          <li><b>6</b><span data-i18n="tr.t">Coupes du Trône</span><small>1963 · 64 · 65 · 87 · 91 · 93</small></li>
+          <li><b>1</b><span data-i18n="tr.c">Coupe de la CAF</span><small>1996</small></li>
+        </ul>
+      </div>
+      <ol class="his-line" id="hisLine"></ol>
+    </div>
+  </div>
+</section>
+
+<!-- 10. SUPPORTERS -->
+<section class="fans" id="fans" aria-labelledby="fanT" aria-roledescription="carrousel">
+  <div class="fans-slides" id="fansSlides">
+    <img class="on" src="assets/fans/fans-1.jpg" alt="Le virage Curva Sud du Kawkab, drapeaux et banderoles">
+    <img src="assets/fans/fans-2.jpg" alt="Les tambours des supporters du Kawkab" loading="lazy">
+    <img src="assets/fans/fans-3.jpg" alt="Vue du virage depuis les tribunes, drapeaux au soleil" loading="lazy">
+    <img src="assets/fans/fans-4.jpg" alt="Tifo des supporters dans le stade" loading="lazy">
+    <img src="assets/fans/fans-5.jpg" alt="Grand tifo rouge et blanc dans les tribunes" loading="lazy">
+    <img src="assets/fans/fans-6.jpg" alt="Les supporters du Kawkab allument le virage" loading="lazy">
+  </div>
+  <div class="fans-shade"></div>
+  <button type="button" class="fans-btn prev" id="fansPrev" aria-label="Photo précédente">‹</button>
+  <button type="button" class="fans-btn next" id="fansNext" aria-label="Photo suivante">›</button>
+  <div class="wrap fans-in">
+    <p class="eyebrow light"><span data-i18n="fan.k">Club &amp; supporters</span></p>
+    <h2 id="fanT" data-i18n="fan.t">Un public, une ambiance</h2>
+    <p data-i18n="fan.p">Les tribunes de Marrakech font la force du Kawkab, match après match.</p>
+  </div>
+  <div class="fans-dots" id="fansDots" role="tablist" aria-label="Photos des supporters"></div>
+</section>
+
+<!-- 11. PARTENAIRES + NEWSLETTER -->
+<section class="sec" aria-labelledby="spT">
+  <div class="wrap">
+    <header class="sec-head"><div><p class="eyebrow"><span data-i18n="sp.k">Ils soutiennent le Kawkab</span></p><h2 id="spT" data-i18n="sp.t">Partenaires</h2></div></header>
+    <ul class="sponsors">
+      <li><img src="assets/sponsors/sponsor-5.webp" alt="Pickalbatros Hotels &amp; Resorts" loading="lazy"></li>
+      <li><img src="assets/sponsors/absport.png" alt="AB Sport" loading="lazy"></li>
+      <li><img src="assets/sponsors/ingelec.png" alt="Ingelec" loading="lazy"></li>
+      <li><img src="assets/sponsors/sultan.png" alt="Sultan" loading="lazy"></li>
+      <li><img class="pad" src="assets/sponsors/al-omrane.png" alt="Groupe Al Omrane" loading="lazy"></li>
+    </ul>
+  </div>
+</section>
+
+<section class="news-letter" aria-labelledby="nlT">
+  <div class="wrap nl">
+    <div><p class="eyebrow light"><span>Newsletter</span></p><h2 id="nlT" data-i18n="nl.t">Les nouvelles du Kawkab dans votre boîte mail.</h2></div>
+    <form id="nlForm" novalidate>
+      <label class="sr" for="nlMail" data-i18n="nl.l">Adresse e-mail</label>
+      <input id="nlMail" type="email" placeholder="email@exemple.com" autocomplete="email" required>
+      <button class="btn btn-red" type="submit" data-i18n="nl.b">S'inscrire</button>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<!-- 12. FOOTER -->
+<footer class="site-footer" id="bot">
+  <div class="wrap foot-grid">
+    <div class="foot-brand">
+      <img src="assets/logo.png?v=2" alt="" width="64" height="64">
+      <p><strong>Kawkab Athletic Club Marrakech</strong><br><span data-i18n="foot.since">Fondé en 1947</span></p>
+    </div>
+    <div>
+      <h3 data-i18n="foot.nav">Navigation</h3>
+      <ul>
+        <li><a href="index.html" data-i18n="nav.home">Accueil</a></li>
+        <li><a href="#" data-soon data-i18n="nav.news">News</a></li>
+        <li><a href="#" data-soon data-i18n="nav.team">Équipe</a></li>
+        <li><a href="#" data-soon data-i18n="nav.store">Boutique</a></li>
+        <li><a href="https://kacm.ticketing.ma/" target="_blank" rel="noopener" data-i18n="cta.ticket">Acheter un billet</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3 data-i18n="foot.contact">Contact</h3>
+      <ul>
+        <li><a href="mailto:clubkacmfoot@gmail.com">clubkacmfoot@gmail.com</a></li>
+        <li>Stade El Arbi Ben Mbarek, Guéliz — Marrakech</li>
+      </ul>
+    </div>
+    <div>
+      <h3 data-i18n="foot.follow">Suivez-nous</h3>
+      <ul class="social">
+        <li><a href="https://www.facebook.com/KACMOfficiiel/" target="_blank" rel="noopener">Facebook</a></li>
+        <li><a href="https://www.instagram.com/kacmofficiel/" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.youtube.com/@kacmtv7253" target="_blank" rel="noopener">YouTube</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap legal"><span>© 2026 KACM</span><span data-i18n="foot.data">Données sportives : relevé public du 16 novembre 2026, non en direct.</span></div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/data.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/common.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
