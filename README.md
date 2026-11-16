@@ -8,8 +8,8 @@ Site du club, reconstruit étape par étape en HTML / CSS / JavaScript natifs (s
 | --- | --- | --- |
 | 1 | Accueil (header, hero, prochain match, dernier résultat, accès rapides, actualités, joueurs, histoire, supporters, partenaires, footer) | fait |
 | 2 | Match Center | à faire |
-| 3 | Équipe & joueurs | à faire |
-| 4 | News & médias | à faire |
+| 3 | Équipe & joueurs (`team.html` : effectif complet, composition 4-3-3 en 3D, fiche joueur) | fait |
+| 4 | News & médias (`news.html` : liste filtrable, fiche article, partage, médias) | fait |
 | 5 | Club / institutionnel | à faire |
 | 6 | Boutique, supporters, stade, sponsors | à faire |
 
@@ -20,7 +20,11 @@ index.html        page d'accueil
 css/style.css     styles
 js/data.js        relevé de données publiques (16/11/2026, non en direct)
 js/i18n.js        textes FR / EN / AR
-js/app.js         rendu des sections, compte à rebours, langue, menu
+js/common.js      socle commun : langue, menu, notifications (toutes les pages)
+js/app.js         accueil : rendu des sections, compte à rebours, diaporama
+js/news-data.js   articles (Instagram @kacmofficiel + presse)
+js/news.js        page Actualités : filtres, fiche article
+news.html         page Actualités
 assets/           logo, photos, portraits, logos d'équipes
 _old/             ancienne version (conservée, aussi dans l'historique git)
 ```

@@ -12,7 +12,7 @@
   const ABBR = { "Wydad AC": "WAC", "Hassania d’Agadir": "HUSA", "CODM Meknès": "CODM", "Ittihad Tanger": "IRT", "Wydad Témara": "WAT", "Difaâ El Jadida": "DHJ", "Amal Tiznit": "AST", "Union Touarga": "UTS" };
   const TEAMS = D.teams || {};
   function logoOf(name) {
-    if (name === "KACM") return "assets/logo.png?v=2";
+    if (name === "KACM") return "assets/logo.png?v=4";
     const n = norm(name), a = ALIAS[n] && TEAMS[ALIAS[n]];
     if (a) return a.logo;
     const k = Object.keys(TEAMS).find(x => norm(x) === n || norm(x).startsWith(n) || n.startsWith(norm(x)) || norm(x).includes(n));
@@ -92,8 +92,8 @@
 
   /* ---------- Actualités ---------- */
   function renderNews() {
-    const l = D.news.filter(n => n.status === "published").sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
-    $("#newsGrid").innerHTML = l.map(n => `<a class="post" href="#" data-soon><div class="post-img"><img src="${esc(n.img)}" alt="" loading="lazy"></div>
+    const l = KACM_NEWS.slice(0, 3);
+    $("#newsGrid").innerHTML = l.map(n => `<a class="post" href="news.html#a=${encodeURIComponent(n.id)}"><div class="post-img" style="--pos:${esc(n.pos || "center")};--fit:${n.fit || "cover"};--bgc:${n.bgc || "#161112"}"><img src="${esc(n.img)}" alt="" loading="lazy"></div>
       <div class="post-body"><div class="post-meta"><span>${esc(n.cat)}</span><time datetime="${esc(n.date)}">${fdate(n.date)}</time></div><h3>${esc(n.title)}</h3><p>${esc(n.excerpt)}</p></div><span class="go" aria-hidden="true">↗</span></a>`).join("");
   }
 
