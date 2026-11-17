@@ -30,7 +30,6 @@
 
   /* ---------- catalogue ---------- */
   function renderCats() {
-    $("#stoChips").innerHTML = CATS.map(([k, n]) => `<button type="button" role="tab" aria-selected="${k === cat}" data-cat="${k}">${esc(n)}</button>`).join("");
   }
   function renderGrid() {
     const l = P.filter(p => cat === "all" || p.cat === cat);
@@ -40,7 +39,6 @@
       <span class="sto-body"><small>${esc(p.season)}</small><strong>${esc(p.name)}</strong>
         <span class="sto-row"><span class="sto-col"><i style="background:${p.color[1]}"></i>${esc(p.color[0])}</span><span class="sto-price">${priceTxt(p)}</span></span>
         <span class="sto-go">Acheter<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M14 6l6 6-6 6"/></svg></span></span></button>`).join("");
-    document.querySelectorAll("#stoChips button").forEach(b => b.setAttribute("aria-selected", b.dataset.cat === cat));
   }
 
   /* ---------- fenêtre produit : détail -> commande -> confirmation ---------- */

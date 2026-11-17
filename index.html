@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=Cairo:wght@500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20261120d">
+<link rel="stylesheet" href="css/style.css?v=20261123s">
 </head>
 <body>
 <a class="skip" href="#main" data-i18n="skip">Aller au contenu</a>
@@ -28,16 +28,18 @@
       <span><strong>KAWKAB</strong><small>MARRAKECH</small></span>
     </a>
     <nav class="nav" id="nav" aria-label="Navigation principale">
-      <a href="index.html" aria-current="page" data-i18n="nav.home">Accueil</a>
-      <a href="news.html" data-i18n="nav.news">News</a>
-      <a href="team.html" data-i18n="nav.team">Équipe</a>
-      <a href="club.html" data-i18n="nav.club">Club</a>
-      <a href="histoire.html" data-i18n="nav.history">Histoire</a>
-      <a href="stade.html" data-i18n="nav.stadium">Stade</a>
-      <a href="store.html" data-i18n="nav.store">Boutique</a>
-      <a href="media.html" data-i18n="nav.media">Média</a>
+      <a href="index.html" aria-current="page">Accueil</a>
+      <a href="club.html">Le Club</a>
+      <a href="histoire.html">Notre Histoire</a>
+      <a href="team.html">Équipe</a>
+      <a href="news.html">Actualités</a>
+      <a href="media.html">Média</a>
+      <a href="stade.html">Stade</a>
+      <a href="store.html">Boutique</a>
+      
     </nav>
     <div class="tools">
+      <button type="button" class="srch-btn" id="srchBtn" aria-label="Rechercher" title="Rechercher"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button>
       <div class="lang" id="lang">
         <button type="button" class="lang-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Langue">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></svg>
@@ -51,7 +53,7 @@
       </div>
       <a class="btn btn-red" href="https://kacm.ticketing.ma/" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9a2 2 0 0 0 0 6v3h18v-3a2 2 0 0 1 0-6V6H3z"/><path d="M14 6v12" stroke-dasharray="2 2"/></svg>
-        <span data-i18n="cta.ticket">Acheter un billet</span><span aria-hidden="true">↗</span>
+        <span data-i18n="cta.bill">Billetterie</span><span aria-hidden="true">↗</span>
       </a>
       <button type="button" class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
     </div>
@@ -73,7 +75,7 @@
         <a class="btn btn-red" href="#matchCenter" data-i18n="cta.matches">Les matchs <span aria-hidden="true">→</span></a>
         <a class="btn btn-ghost" href="#history" data-i18n="cta.club">Découvrir le club <span aria-hidden="true">→</span></a>
       </div>
-      <div class="chip" id="heroChip"></div>
+      
     </div>
   </div>
   <div class="hero-bar" aria-hidden="true"><i></i></div>
@@ -98,9 +100,9 @@
 <!-- 6. ACCÈS RAPIDE -->
 <section class="sec quick-sec" aria-label="Accès rapide">
   <div class="wrap quick qb">
-    <a class="qbtn" href="https://kacm.ticketing.ma/" target="_blank" rel="noopener"><span class="qb-l"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 9a2 2 0 0 0 0 6v3h18v-3a2 2 0 0 1 0-6V6H3z"/><path d="M14 6v12" stroke-dasharray="2 2"/></svg><b data-i18n="q.t.k">Billetterie</b></span><span class="qb-ar" aria-hidden="true">→</span></a>
-    <a class="qbtn" href="store.html"><span class="qb-l"><span class="qb-i" aria-hidden="true">→</span><b data-i18n="q.s.k">Boutique</b></span><span class="qb-ar" aria-hidden="true">→</span></a>
-    <a class="qbtn" href="team.html"><span class="qb-l"><span class="qb-i" aria-hidden="true">→</span><b data-i18n="q.e.b">Équipe pro</b></span><span class="qb-ar" aria-hidden="true">→</span></a>
+    <a class="qbtn" href="https://kacm.ticketing.ma/" target="_blank" rel="noopener"><span class="qb-ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9a2 2 0 0 0 0 6v3h18v-3a2 2 0 0 1 0-6V6H3z"/><path d="M14 6v12" stroke-dasharray="2 2"/></svg></span><span class="qb-t"><b data-i18n="q.t.k">Billetterie</b><small data-i18n="q.t.s">Réservez votre place</small></span><span class="qb-go" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+    <a class="qbtn" href="store.html"><span class="qb-ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 11H6.2z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span><span class="qb-t"><b data-i18n="q.s.k">Boutique</b><small data-i18n="q.s.s">Maillots et collection 2026/27</small></span><span class="qb-go" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+    <a class="qbtn" href="team.html"><span class="qb-ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M16 14.2c3 0 5 2.3 5 5.3"/></svg></span><span class="qb-t"><b data-i18n="q.e.b">Équipe pro</b><small data-i18n="q.e.s">Joueurs et staff technique</small></span><span class="qb-go" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
   </div>
 </section>
 
@@ -159,14 +161,27 @@
         <h2 id="hisT" data-i18n="his.t">Marrakech.<br>Depuis 1947.</h2>
         <p data-i18n="his.p">Fondé à Marrakech en 1947, le Kawkab Athlétique Club de Marrakech porte le rouge et le blanc de la Ville Rouge. Ses succès en championnat, en Coupe du Trône et en Coupe de la CAF jalonnent l'histoire du football marocain.</p>
         <a class="btn btn-dark" href="histoire.html"><span data-i18n="his.c">Histoire complète du Kawkab</span><span aria-hidden="true">↗</span></a>
-        <ul class="trophies">
-          <li><b>2</b><span data-i18n="tr.l">Championnats du Maroc</span><small>1958 · 1992</small></li>
-          <li><b>6</b><span data-i18n="tr.t">Coupes du Trône</span><small>1963 · 64 · 65 · 87 · 91 · 93</small></li>
-          <li><b>1</b><span data-i18n="tr.c">Coupe de la CAF</span><small>1996</small></li>
-        </ul>
+        
       </div>
       <ol class="his-line" id="hisLine"></ol>
     </div>
+    <ul class="trophies">
+          <li><img class="tr-img" src="assets/history/history-league.webp" alt="" loading="lazy"><b>2</b><span data-i18n="tr.l">Championnats du Maroc</span><small>1958 · 1992</small></li>
+          <li><img class="tr-img" src="assets/history/history-throne.webp" alt="" loading="lazy"><b>6</b><span data-i18n="tr.t">Coupes du Trône</span><small>1963 · 64 · 65 · 87 · 91 · 93</small></li>
+          <li><img class="tr-img caf" src="assets/history/history-caf-1996.webp" alt="" loading="lazy"><b>1</b><span data-i18n="tr.c">Coupe de la CAF</span><small>1996</small></li>
+        </ul>
+  </div>
+</section>
+
+<!-- STATISTIQUES -->
+<section class="stats-sec" aria-label="Le Kawkab en chiffres">
+  <div class="wrap">
+    <ul class="kpis">
+      <li><b data-count="79">79</b><span>ans d’histoire</span><small>Fondé en 1947</small></li>
+      <li><b data-count="9">9</b><span>titres majeurs</span><small>2 championnats · 6 Coupes du Trône · 1 Coupe CAF</small></li>
+      <li><b data-count="1996">1996</b><span>sacre africain</span><small>Coupe de la CAF</small></li>
+      <li><b data-count="45240">45 240</b><span>places au Grand Stade</span><small>Marrakech</small></li>
+    </ul>
   </div>
 </section>
 
@@ -187,12 +202,13 @@
     <p class="eyebrow light"><span data-i18n="fan.k">Club &amp; supporters</span></p>
     <h2 id="fanT" data-i18n="fan.t">Un public, une ambiance</h2>
     <p data-i18n="fan.p">Les tribunes de Marrakech font la force du Kawkab, match après match.</p>
+    <a class="btn btn-red fans-join" href="mailto:clubkacmfoot@gmail.com?subject=Adh%C3%A9sion%20supporters"><span>Adhérer · rejoindre les supporters</span><span aria-hidden="true">→</span></a>
   </div>
   <div class="fans-dots" id="fansDots" role="tablist" aria-label="Photos des supporters"></div>
 </section>
 
 <!-- 11. PARTENAIRES + NEWSLETTER -->
-<section class="sec sec-sp" aria-labelledby="spT">
+<section class="sec sec-sp" id="partners" aria-labelledby="spT">
   <div class="wrap">
     <header class="sec-head"><div><p class="eyebrow"><span data-i18n="sp.k">Ils soutiennent le Kawkab</span></p><h2 id="spT" data-i18n="sp.t">Partenaires</h2></div></header>
     <ul class="sponsors">
@@ -257,10 +273,10 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="js/data.js?v=20261120d"></script>
-<script src="js/news-data.js?v=20261120d"></script>
-<script src="js/i18n.js?v=20261120d"></script>
-<script src="js/common.js?v=20261120d"></script>
-<script src="js/app.js?v=20261120d"></script>
+<script src="js/data.js?v=20261123s"></script>
+<script src="js/news-data.js?v=20261123s"></script>
+<script src="js/i18n.js?v=20261123s"></script>
+<script src="js/common.js?v=20261123s"></script>
+<script src="js/app.js?v=20261123s"></script>
 </body>
 </html>

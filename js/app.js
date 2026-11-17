@@ -53,7 +53,7 @@
     const [h, a] = sides(m);
     return `<article class="mcard"><div class="mcard-top"><span class="badge">${t("last")}</span><span>${fdate(m.date)} · ${t("round")}${m.round}</span></div>
       <div class="versus">${teamBox(h)}<div class="score"><strong>${m.hs}<i>–</i>${m.as}</strong><small>${t("fin")}</small></div>${teamBox(a)}</div>
-      <div class="mcard-foot"><span>${esc(m.comp)} · ${t("round")}${m.round}</span><a href="#" data-soon>${t("sum")}</a></div></article>`;
+      <div class="mcard-foot"><span>${esc(m.comp)} · ${t("round")}${m.round}</span><a href="${esc(m.source || "media.html#videos")}" ${m.source ? 'target="_blank" rel="noopener"' : ""}>${t("sum")}</a></div></article>`;
   }
   function cardNext() {
     const m = upcoming[0]; if (!m) return `<article class="mcard"><div class="mcard-top"><span class="badge">${t("next")}</span></div><p class="empty">${t("none")}</p></article>`;
@@ -61,11 +61,11 @@
     return `<article class="mcard"><div class="mcard-top"><span class="badge">${t("next")}</span><span>${has ? fdate(m.date) + " · " : ""}${t("round")}${m.round}</span></div>
       <div class="versus">${teamBox(h)}<div class="vs"><strong>VS</strong><small>${m.home ? t("home") : t("away")}</small></div>${teamBox(a)}</div>
       ${has ? `<div class="cd" id="cd" data-date="${esc(m.date)}">${["d", "h", "m", "s"].map(u => `<div><b data-u="${u}">00</b><span>${u}</span></div>`).join("")}</div>` : `<p class="tbc">${t("tbc")}</p>`}
-      <div class="mcard-foot"><span>${esc(m.comp)}</span><a href="#" data-soon>${t("cal")}</a></div></article>`;
+      <div class="mcard-foot"><span>${esc(m.comp)}</span><a href="#matchCenter" data-tabgo="cal">${t("cal")}</a></div></article>`;
   }
   function cardRank() {
     if (!me) return "";
-    return `<article class="rank"><small>${t("rankT")} · ${t("round")}${me.p}</small><strong>${me.rk}${ord(me.rk)}</strong><b>Kawkab Marrakech</b><hr><span>${me.pts} ${t("pts")}</span><a href="#" data-tabgo="table">${t("all")}<span aria-hidden="true">→</span></a></article>`;
+    return `<article class="rank"><small>${t("rankT")} · ${t("round")}${me.p}</small><strong>${me.rk}${ord(me.rk)}</strong><b>Kawkab Marrakech</b><hr><span>${me.pts} ${t("pts")}</span><a href="#matchCenter" data-tabgo="table">${t("all")}</a></article>`;
   }
   const rowFor = m => { const [h, a] = sides(m), fin = m.status === "finished";
     return `<div class="row"><span class="d">${m.date ? fdate(m.date) : t("tbc")} · ${t("round")}${m.round}</span><span class="t">${crest(h)}${esc(full(h))}</span>
@@ -98,11 +98,23 @@
   }
 
   /* ---------- Équipe + joueurs ---------- */
+  /* compteur rapide pour des éléments dont le texte est un entier */
+  const teamIO = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    teamIO.unobserve(e.target);
+    const end = +e.target.dataset.to, t0 = performance.now(), d = 600;
+    (function step(t) { const p = Math.min(1, (t - t0) / d); e.target.textContent = Math.round(end * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); })(t0);
+  }), { threshold: 0.5 }) : null;
+  function countUp(list) {
+    if (!teamIO || matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+    list.forEach(el => { const n = parseInt(el.textContent, 10); if (isNaN(n)) return; el.dataset.to = n; el.textContent = "0"; teamIO.observe(el); });
+  }
   function renderTeam() {
     const coach = (D.staff.find(s => s.role === "coach") || {}).name || "";
     if (me) {
       $("#teamP").textContent = t("teamP").replace("{coach}", coach).replace("{n}", me.p).replace("{r}", ordTxt(me.rk)).replace("{pts}", me.pts);
       $("#teamStats").innerHTML = [[t("w"), me.w], [t("ndr"), me.d], [t("nl2"), me.l], [t("gf"), me.gf]].map(([l, v]) => `<div><dt>${l}</dt><dd>${v}</dd></div>`).join("");
+      countUp(document.querySelectorAll("#teamStats dd"));
     }
     const ids = [88078, 88305, 90356, 86773];
     $("#playersGrid").innerHTML = ids.map(id => D.players.find(p => p.id === id)).filter(Boolean).map(p => `<article class="pl"><div class="pl-photo" aria-hidden="true"><span class="pl-num">${esc(p.num)}</span></div>
@@ -113,7 +125,7 @@
   }
 
   /* ---------- Langue ---------- */
-  function renderAll() { renderChip(); renderCenter(); renderNews(); renderTeam(); renderHistory(); }
+  function renderAll() { renderCenter(); renderNews(); renderTeam(); renderHistory(); }
   KACM.onLang(renderAll);
 
   /* ---------- Interactions ---------- */
@@ -146,6 +158,74 @@
     sec.addEventListener("keydown", e => { if (e.key === "ArrowLeft") { show(cur - (document.dir === "rtl" ? -1 : 1) * 1); play(); } if (e.key === "ArrowRight") { show(cur + (document.dir === "rtl" ? -1 : 1)); play(); } });
     document.addEventListener("visibilitychange", () => (document.hidden ? stop() : play()));
     play();
+  })();
+
+  /* ---------- La saison en images : sur téléphone, un seul cadre où les photos défilent ---------- */
+  (function () {
+    const ul = document.querySelector(".gallery");
+    if (!ul) return;
+    const lis = [...ul.children], mq = matchMedia("(max-width:760px)");
+    let i = 0, timer = null, dots = null;
+    function show(n) {
+      i = (n + lis.length) % lis.length;
+      lis.forEach((l, k) => l.classList.toggle("on", k === i));
+      if (dots) [...dots.children].forEach((d, k) => d.setAttribute("aria-selected", k === i));
+    }
+    function stop() { clearInterval(timer); timer = null; }
+    function play() { stop(); if (!mq.matches || matchMedia("(prefers-reduced-motion:reduce)").matches) return; timer = setInterval(() => show(i + 1), 3500); }
+    function apply() {
+      if (mq.matches) {
+        ul.classList.add("slide");
+        if (!dots) {
+          dots = document.createElement("div");
+          dots.className = "gal-dots";
+          dots.innerHTML = lis.map((_, k) => `<button type="button" data-g="${k}" aria-label="Photo ${k + 1}"></button>`).join("");
+          ul.after(dots);
+          dots.addEventListener("click", e => { const b = e.target.closest("[data-g]"); if (b) { show(+b.dataset.g); play(); } });
+        }
+        dots.hidden = false;
+        lis.forEach(l => { const im = l.querySelector("img"); if (im) im.loading = "eager"; });
+        show(i); play();
+      } else {
+        stop(); ul.classList.remove("slide"); lis.forEach(l => l.classList.remove("on"));
+        if (dots) dots.hidden = true;
+      }
+    }
+    mq.addEventListener("change", apply);
+    document.addEventListener("visibilitychange", () => (document.hidden ? stop() : play()));
+    let x0 = null;
+    ul.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, { passive: true });
+    ul.addEventListener("touchend", e => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) { show(i + (dx < 0 ? 1 : -1)); play(); } x0 = null; }, { passive: true });
+    apply();
+  })();
+
+  /* ---------- Chiffres clés : compteur rapide à l'apparition ---------- */
+  (function () {
+    const els = document.querySelectorAll(".kpis [data-count]");
+    if (!els.length || !("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      io.unobserve(e.target);
+      const end = +e.target.dataset.count, t0 = performance.now(), d = 650, fmt = n => (end >= 10000 ? n.toLocaleString("fr-FR") : String(n));
+      (function step(t) { const p = Math.min(1, (t - t0) / d), v = Math.round(end * (1 - Math.pow(1 - p, 3))); e.target.textContent = fmt(v).replace(/\u202f|\u00a0/g, " "); if (p < 1) requestAnimationFrame(step); })(t0);
+    }), { threshold: 0.35 });
+    els.forEach(b => { b.textContent = "0"; io.observe(b); });
+  })();
+
+  /* ---------- Frise « Histoire » : apparition en cascade au défilement ---------- */
+  (function () {
+    const ol = document.getElementById("hisLine");
+    if (!ol) return;
+    const items = () => [...ol.children];
+    if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+    ol.classList.add("reveal");
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      items().forEach((li, k) => setTimeout(() => li.classList.add("in"), k * 110));
+    }), { threshold: 0.25 });
+    io.observe(ol);
+    new MutationObserver(() => { if (!ol.querySelector(".in")) return; items().forEach(li => li.classList.add("in")); }).observe(ol, { childList: true });
   })();
 
   KACM.applyLang();

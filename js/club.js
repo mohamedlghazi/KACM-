@@ -7,20 +7,20 @@
   const DRAFT = true;
   const PRESIDENT = {
     name: "Driss Hanifa",
-    role: "Président du KACM",
+    role: "Président du KACM (section football)",
     photo: "assets/club/president.jpg",
     intro: [
-      "Le Kawkab Athletic Club de Marrakech n'est pas seulement un club : c'est une histoire qui s'écrit depuis 1947 au rythme de la Ville Rouge. Deux fois champion du Maroc, six fois vainqueur de la Coupe du Trône et vainqueur de la Coupe de la CAF en 1996, le Kawkab porte un héritage dont nous mesurons chaque jour la valeur.",
-      "Ce que nous construisons aujourd'hui repose sur trois piliers."
+      "Élu à l'unanimité le 9 juillet 2023 pour un mandat de quatre ans, Driss Hanifa préside la section football du Kawkab Athletic Club de Marrakech. Il dirigeait auparavant le comité provisoire du club (2022-2023), saison de la montée en Botola Pro D2. Voici ses propos et annonces, tels que rapportés par la presse."
     ],
     pillars: [
-      ["Une organisation solide", "Consolider une gestion moderne, structurée et rigoureuse, à la hauteur des exigences du football professionnel, pour garantir au club une stabilité durable."],
-      ["Un projet sportif ambitieux", "Renforcer l'effectif, soutenir le travail du staff technique et offrir à nos supporters une équipe compétitive, fière de porter le rouge et blanc."],
-      ["Un club ancré dans sa ville", "Le Kawkab appartient à Marrakech et à ceux qui l'aiment. Il doit rester un lieu de rassemblement, de transmission et de valeurs partagées."]
+      ["Retrouver l'élite · juillet 2023", "Après son élection, il indique à la MAP que le nouveau bureau vise la montée en Botola Pro D1 dès la saison suivante."],
+      ["Former les jeunes · juillet 2023", "Il insiste sur le projet de formation : le centre de formation doit devenir un modèle national et une source de jeunes talents de Marrakech. Il attribue les difficultés financières du club au coût élevé des recrutements."],
+      ["Le retour à El Harti · septembre 2025", "À l'assemblée générale du 6 septembre 2025, il annonce le retour du Kawkab dans son stade historique, El Harti, les grandes affiches (Raja, Wydad, FAR) restant programmées au Grand Stade, et la nomination de la maire de Marrakech, Fatima Zahra Mansouri, comme présidente d'honneur."]
     ],
     outro: [
-      "Merci à nos supporters, à nos partenaires et à toutes celles et ceux qui portent les couleurs du Kawkab dans leur cœur. Ensemble, nous continuerons à écrire l'histoire du club."
-    ]
+      "À l'assemblée générale de juillet 2023, 29 adhérents sur 38 étaient présents. Pour la période de septembre 2022 au 30 juin 2023, les revenus du club dépassaient 11,1 millions de DH, pour environ 11 millions de dépenses."
+    ],
+    src: "Sources : Hespress et Elbotola (10-11 juillet 2023, déclarations à la MAP) ; Marrakech Post et Kech24 (assemblée générale du 6 septembre 2025)."
   };
   const MISSION = {
     slogan: "« Dima Kawkab » — L'esprit du KACM",
@@ -41,9 +41,10 @@
     return `<section class="cl-pres2"><div class="wrap cl-bar2">${tabs()}</div><div class="cl-bg" role="img" aria-label="${esc(P.name)}" style="background-image:url('${esc(P.photo)}')"></div>
       <div class="wrap"><article class="cl-text"><p class="eyebrow light"><span>${t("cl.k1")}</span></p><h2>${t("cl.t1")}</h2>
         ${P.intro.map(p => `<p>${esc(p)}</p>`).join("")}
+        
         <div class="cl-pillars">${P.pillars.map(([h, d], i) => `<div><b>0${i + 1}</b><h3>${esc(h)}</h3><p>${esc(d)}</p></div>`).join("")}</div>
         ${P.outro.map(p => `<p>${esc(p)}</p>`).join("")}
-        <p class="cl-sign"><strong>${esc(P.name)}</strong><span>${esc(P.role)}</span></p>${note()}</article></div></section>`;
+        <p class="cl-sign"><strong>${esc(P.name)}</strong><span>${esc(P.role)}</span></p><p class="cl-draft">${esc(P.src)}</p></article></div></section>`;
   }
 
   function renderMission() {
